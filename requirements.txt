@@ -1,0 +1,5 @@
+pytest==8.3.3
+selenium==4.25.0
+allure-pytest==2.13.5
+# Allure CLI is required to generate reports
+# Install it via Homebrew: brew install allure
