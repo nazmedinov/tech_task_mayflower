@@ -17,18 +17,27 @@ class LoginPage(BasePage):
     def open_login_form(self):
         self.wait_and_click(self.locators.PERSONAL_ACCOUNT_BUTTON)
         self.wait_and_click(self.locators.LOGIN_FORM_BUTTON)
+        return self
 
-    @allure.step('Авторизация через форму логина')
-    def login_account(self):
+    @allure.step('Авторизация в форме логина')
+    def login_account_in_form(self):
         self.clear_field(self.locators.LOGIN_FIELD)
         self.set_value_to_field(self.locators.LOGIN_FIELD, os.environ.get('LOGIN_EMAIL'))
         self.clear_field(self.locators.PASSWORD_FIELD)
         self.set_value_to_field(self.locators.PASSWORD_FIELD, os.environ.get('LOGIN_PASSWORD'))
         self.wait_and_click(self.locators.LOGIN_BUTTON)
+        return self
+
+    @allure.step('Логин существующего юзера')
+    def login_exist_user(self):
+        self.open_login_form()
+        self.login_account_in_form()
+        return self
 
     @allure.step('Открытие меню аккаунта авторизованного пользователя')
     def open_account_menu(self):
         self.wait_and_click(self.locators.ACCOUNT_MENU_BUTTON)
+        return self
 
 
 class LoginPageLocators(BasePageLocators):
