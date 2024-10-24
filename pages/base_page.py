@@ -41,7 +41,7 @@ class BasePage(object):
         self.browser.find_element(*element).send_keys(value)
 
 
-class BasePageLocator(object):
+class BasePageLocators(object):
     # xpath кнопки "Личный аккаунт" в хедере страницы
     PERSONAL_ACCOUNT_BUTTON = (By.XPATH, "//span[text()='Личный кабинет']")
     # xpath кнопки "Вход" в хедере страницы для открытия формы логина

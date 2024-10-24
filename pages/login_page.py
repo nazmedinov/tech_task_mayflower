@@ -2,7 +2,7 @@ import allure
 import os
 
 from selenium.webdriver.common.by import By
-from pages.base_page import BasePage, BasePageLocator
+from pages.base_page import BasePage, BasePageLocators
 from dotenv import load_dotenv
 
 
@@ -31,7 +31,7 @@ class LoginPage(BasePage):
         self.wait_and_click(self.locators.ACCOUNT_MENU_BUTTON)
 
 
-class LoginPageLocators(BasePageLocator):
+class LoginPageLocators(BasePageLocators):
     # xpath поля для ввода email в форме логина
     LOGIN_FIELD = (By.XPATH, "//input[@name='login']")
     # xpath поля для ввода пароля в форме логина
