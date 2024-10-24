@@ -5,8 +5,8 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 
-@allure.step('Открытие браузера')
 @pytest.fixture
+@allure.step('Открытие браузера')
 def browser():
     chrome_options = Options()
     # chrome_options.add_argument('--headless')
