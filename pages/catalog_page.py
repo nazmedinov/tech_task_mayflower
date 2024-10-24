@@ -15,8 +15,10 @@ class CatalogPage(BasePage):
         self.wait_and_click(self.locators.CATALOG_MENU_BUTTON)
         return self
 
+    @allure.step('Выбор в каталоге категории "Планшеты"')
     def choose_tablets_category(self):
         self.hover_on_element(self.locators.SECTION_ELECTRONIC_BUTTON)
+        self.hover_on_element(self.locators.CATEGORY_TABLETS_BUTTON)
         return self
 
 
@@ -25,3 +27,11 @@ class CatalogPageLocators(BasePageLocators):
     CATALOG_MENU_BUTTON = (By.XPATH, "//button[contains(@class, 'dropdown-catalog-btn')]")
     # xpath кнопки раздела "Электроника" в каталоге
     SECTION_ELECTRONIC_BUTTON = (By.XPATH, "//span[text()='Электроника']")
+    # xpath кнопки категории "Планшеты" в каталоге
+    CATEGORY_TABLETS_BUTTON = (By.XPATH, "//a[text()='Планшеты' and contains(@class, 'subcat-list-item')]")
+    # xpath кнопки планшета DIGMA в каталоге
+    DIGMA_TABLET_BUTTON = (By.XPATH, "//div[contains(@class, 'catalog__subsubcat')]//a[text()='Digma']")
+    # xpath заголовка на странице планшета DIGMA
+    DIGMA_TABLET_TITLE = (By.XPATH, "//main//h1")
+    # xpath карточки товара на странице планшетов DIGMA
+    DIGMA_TABLET_ITEM = (By.XPATH, "//div[contains(@class, 'item-card__wrapper')]")
