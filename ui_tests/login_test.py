@@ -16,7 +16,11 @@ class TestLogin(BaseTest):
         self.login_page.open_login_form().login_account_in_form()
         self.login_page.open_account_menu()
 
+        assert self.login_page.is_element_present(
+            self.login_page.login_locators.USER_PROFILE_BUTTON,
+        ), self.login_page.error_messages.ELEMENT_NOT_PRESENT
+
         assert self.login_page.is_element_text_correct(
             self.login_page.login_locators.USER_PROFILE_BUTTON,
-            'Мой профиль'
+            'Мой профиль',
         ), self.login_page.error_messages.INCORRECT_ELEMENT_TEXT

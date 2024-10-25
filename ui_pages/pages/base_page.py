@@ -154,6 +154,15 @@ class BasePage(object):
 
         return timeout, step
 
+    @allure.step("Checking that the element is present on the page")
+    def is_element_present(self, locator, timeout=None, step=None):
+        timeout, step = self.check_that_timeout_and_step_filled(timeout, step)
+        try:
+            WebDriverWait(self.browser, timeout, step).until(EC.presence_of_element_located(locator))
+        except TimeoutException:
+            return False
+        return True
+
     @allure.step("Check if the element text matches the value {text}")
     def is_element_text_correct(self, locator, text):
         """
