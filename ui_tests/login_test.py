@@ -1,4 +1,5 @@
 import allure
+import pytest
 
 from ui_tests.base_test import BaseTest
 
@@ -6,6 +7,7 @@ from ui_tests.base_test import BaseTest
 @allure.epic('Пользовательские тесты')
 @allure.feature('Логин пользователя')
 class TestLogin(BaseTest):
+    @pytest.mark.smoke
     @allure.title('Проверка авторизации пользователя с корректными данными')
     def test_login_user(self):
         self.login_page.open_page()

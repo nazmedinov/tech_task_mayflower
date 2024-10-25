@@ -1,4 +1,5 @@
 import allure
+import pytest
 
 from ui_tests.base_test import BaseTest
 
@@ -6,6 +7,7 @@ from ui_tests.base_test import BaseTest
 @allure.epic('Пользовательские тесты')
 @allure.feature('Каталог товаров')
 class TestCatalog(BaseTest):
+    @pytest.mark.smoke
     @allure.title('Проверка открытия пользователем категории через каталог: планшеты Digma')
     def test_open_digma_items_from_catalog(self):
         self.catalog_page.open_page()

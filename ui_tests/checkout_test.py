@@ -1,4 +1,5 @@
 import allure
+import pytest
 
 from ui_tests.base_test import BaseTest
 
@@ -6,6 +7,7 @@ from ui_tests.base_test import BaseTest
 @allure.epic('Пользовательские тесты')
 @allure.feature('Корзина товаров')
 class TestCheckout(BaseTest):
+    @pytest.mark.smoke
     @allure.title('Проверка добавления и удаления из корзины единицы товара из категории: планшеты Digma')
     def test_add_and_remove_digma_from_checkout(self):
         self.checkout_page.open_page(self.checkout_page.url.DIGMA_TABLET_PAGE_URL)
