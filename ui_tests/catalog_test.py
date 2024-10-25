@@ -22,5 +22,5 @@ class TestCatalog(BaseTest):
         ), self.catalog_page.error_messages.INCORRECT_ELEMENT_TITLE
         assert self.catalog_page.is_current_url_correct(self.catalog_page.url.DIGMA_TABLET_PAGE_URL), \
             self.catalog_page.error_messages.INCORRECT_URL_PAGE
-        assert self.catalog_page.is_at_least_one_item_present(self.catalog_page.catalog_locators.DIGMA_TABLET_ITEM), \
+        assert self.catalog_page.is_at_least_one_item_present(self.catalog_page.catalog_locators.SINGLE_ITEM_BUTTON), \
             self.catalog_page.error_messages.INCORRECT_NUMBER_OF_ITEMS

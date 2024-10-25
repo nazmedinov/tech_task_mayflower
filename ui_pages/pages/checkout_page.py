@@ -49,8 +49,6 @@ class CheckoutPage(BasePage):
 class CheckoutPageLocators(BasePageLocators):
     # xpath названия товара внутри выбранной категории
     ITEM_NAME_INSIDE_CATEGORY = (By.XPATH, "//a[contains(@class, 'item-card__title')]")
-    # xpath кнопки добавления товара в корзину
-    ADD_TO_CART_BUTTON = (By.XPATH, "//*[contains(@class,'order-first')]//span[text()='В корзину']")
     # xpath названия товара внутри корзины
     ITEM_NAME_INSIDE_CART = (By.XPATH, "//a[@class='cart-checkout-item__title']")
     # xpath тайтла на странице корзины товаров
