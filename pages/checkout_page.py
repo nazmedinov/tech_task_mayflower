@@ -13,8 +13,8 @@ class CheckoutPage(BasePage):
         self.current_page_url = self.url.CHECKOUT_PAGE_URL
         self.locators = CheckoutPageLocators()
 
-    def add_item_to_cart(self, item_number=0):
-        item = self.browser.find_elements(*self.locators.ITEM_NAME_INSIDE_CATEGORY)[item_number]
+    def add_item_to_cart(self, item_number=1):
+        item = self.browser.find_elements(*self.locators.ITEM_NAME_INSIDE_CATEGORY)[item_number-1]
         item_name = item.text
         self.scroll_to_item(item)
         self.wait_until_element_clickable(item)
