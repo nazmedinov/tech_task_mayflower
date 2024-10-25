@@ -19,7 +19,6 @@ class TestCatalog(BaseTest):
         self.catalog_page.hover_on_item_in_dropdown(self.catalog_page.catalog_items.ELECTRONICS)
         self.catalog_page.hover_on_item_in_dropdown(self.catalog_page.catalog_items.electronics.TABLETS)
         self.catalog_page.click_on_item_in_dropdown(self.catalog_page.catalog_items.electronics.tablets.DIGMA)
-        time.sleep(10)
 
         assert self.catalog_page.is_element_text_correct(
             self.catalog_page.catalog_locators.DIGMA_TABLET_TITLE,
