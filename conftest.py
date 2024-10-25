@@ -4,10 +4,10 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-from pages.base_page import BasePage
+from ui_pages.pages.base_page import BasePage
 
 
-@allure.step('Открытие браузера')
+@allure.step('Browser opening')
 @pytest.fixture
 def browser():
     chrome_options = Options()
