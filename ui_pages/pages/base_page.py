@@ -1,6 +1,6 @@
 import allure
 
-from selenium.common import TimeoutException
+from selenium.common import TimeoutException, ElementClickInterceptedException, StaleElementReferenceException
 from selenium.webdriver import ActionChains
 from ui_pages.config import PagesURL
 from selenium.webdriver.support.wait import WebDriverWait
@@ -47,72 +47,93 @@ class BasePage(object):
 
         return self
 
-    @allure.step('Click on the element reflected on the page')
-    def wait_and_click(self, element, timeout=None, step=None):
-        timeout, step = self.check_that_timeout_and_step_filled(timeout, step)
-        WebDriverWait(self.browser, timeout, step).until(EC.visibility_of_element_located(element))
-        self.wait_for_element_clickability(element)
-        self.browser.find_element(*element).click()
+    @allure.step('Click on the element without waiting')
+    def click(self, locator):
+        try:
+            element = self.browser.find_element(*locator)
+            element.click()
+        except (ElementClickInterceptedException, StaleElementReferenceException):
+            raise ElementClickInterceptedException(self.error_messages.ELEMENT_FAILED_CLICK)
 
-        return self
+        return element
+
+    @allure.step('Click on the element reflected on the page')
+    def wait_and_click(self, locator):
+        self.wait_for_visibility(locator)
+        self.wait_for_element_clickability(locator)
+        element = self.click(locator)
+
+        return element
 
     @allure.step("Deleting a filled value in a text field")
-    def clear_field(self, element):
-        self.wait_and_click(element)
-        input_field = self.browser.find_element(*element)
-        self.browser.execute_script("arguments[0].value = '';", input_field)
+    def clear_field(self, locator):
+        element = self.wait_and_click(locator)
+        self.browser.execute_script("arguments[0].value = '';", element)
 
-        return self
+        return element
 
     @allure.step("Filling the value {value} into the text field")
-    def set_value_to_field(self, element, value):
-        self.wait_and_click(element)
-        self.browser.find_element(*element).send_keys(value)
+    def set_value_to_field(self, locator, value):
+        element = self.wait_and_click(locator)
+        element.send_keys(value)
 
-        return self
+        return element
 
     @allure.step("Hover over an element")
-    def hover_on_element(self, element):
-        self.wait_for_visibility(element)
+    def hover_on_element(self, locator):
+        element = self.wait_for_visibility(locator)
         actions = ActionChains(self.browser)
-        actions.move_to_element(self.browser.find_element(*element)).perform()
+        actions.move_to_element(element).perform()
 
-        return self
+        return element
 
     @allure.step("Waiting for an element to appear on the page")
-    def wait_for_visibility(self, element, timeout=None, step=None):
+    def wait_for_visibility(self, locator, timeout=None, step=None):
         timeout, step = self.check_that_timeout_and_step_filled(timeout, step)
-        WebDriverWait(self.browser, timeout, step).until(EC.visibility_of_element_located(element))
+        try:
+            element = WebDriverWait(self.browser, timeout, step).until(EC.visibility_of_element_located(locator))
+        except TimeoutException:
+            raise AssertionError(self.error_messages.ELEMENT_NOT_VISIBLE)
 
-        return self
+        return element
 
     @allure.step("Wait until the element is not visible on the page")
-    def wait_for_invisibility(self, element, timeout=None, step=None):
+    def wait_for_invisibility(self, locator, timeout=None, step=None):
         timeout, step = self.check_that_timeout_and_step_filled(timeout, step)
-        WebDriverWait(self.browser, timeout, step).until_not(EC.visibility_of_element_located(element))
-
-        return self
+        try:
+            element = WebDriverWait(self.browser, timeout, step).until_not(EC.visibility_of_element_located(locator))
+        except TimeoutException:
+            raise AssertionError(self.error_messages.ELEMENT_NOT_INVISIBLE)
+        return element
 
     @allure.step("Waiting for an element to appear in the page's DOM")
-    def wait_for_presence(self, element, timeout=None, step=None):
+    def wait_for_presence(self, locator, timeout=None, step=None):
         timeout, step = self.check_that_timeout_and_step_filled(timeout, step)
-        WebDriverWait(self.browser, timeout, step).until(EC.presence_of_element_located(element))
-
-        return self
+        try:
+            element = WebDriverWait(self.browser, timeout, step).until(EC.presence_of_element_located(locator))
+        except TimeoutException:
+            raise AssertionError(self.error_messages.ELEMENT_NOT_PRESENT)
+        return element
 
     @allure.step('Wait for the element to be clickable')
-    def wait_for_element_clickability(self, element, timeout=None, step=None):
+    def wait_for_element_clickability(self, locator, timeout=None, step=None):
         timeout, step = self.check_that_timeout_and_step_filled(timeout, step)
-        WebDriverWait(self.browser, timeout, step).until(EC.element_to_be_clickable(element))
+        try:
+            element = WebDriverWait(self.browser, timeout, step).until(EC.element_to_be_clickable(locator))
+        except TimeoutException:
+            raise AssertionError(self.error_messages.ELEMENT_NOT_CLICKABLE)
 
-        return self
+        return element
 
     @allure.step("Scroll to element")
-    def scroll_to_element(self, element):
-        self.wait_for_presence(element)
-        self.browser.execute_script("arguments[0].scrollIntoView();", self.browser.find_element(*element))
+    def scroll_to_element(self, locator):
+        element = self.wait_for_presence(locator)
+        try:
+            self.browser.execute_script("arguments[0].scrollIntoView();", element)
+        except TimeoutException:
+            raise AssertionError(self.error_messages.ELEMENT_FAILED_SCROLL)
 
-        return self
+        return element
 
     def check_that_timeout_and_step_filled(self, timeout, step):
         """
@@ -134,19 +155,20 @@ class BasePage(object):
         return timeout, step
 
     @allure.step("Check if the element text matches the value {text}")
-    def is_element_text_correct(self, element, text):
+    def is_element_text_correct(self, locator, text):
         """
         Check if the text of a specified element matches the expected value.
 
         Args:
-            element (tuple): A locator tuple (By, value) used to find the element.
+            locator (tuple): A locator tuple (By, value) used to find the element.
             text (str): The expected text that should match the element's text.
 
         Returns:
             bool: True if the element's text matches the expected text, False otherwise.
         """
+        element = self.wait_for_visibility(locator)
 
-        return self.wait_for_visibility(element).browser.find_element(*element).text == text
+        return element.text == text
 
     @allure.step("Check if the current url matches the expected {expected_url}")
     def is_current_url_correct(self, expected_url):
@@ -163,15 +185,15 @@ class BasePage(object):
         return self.browser.current_url == expected_url
 
     @allure.step('Check that at least one item is present on the page')
-    def is_at_least_one_item_present(self, element):
+    def is_at_least_one_item_present(self, locator):
         """
         Check if at least one instance of the specified element is present on the page.
 
         Args:
-            element (tuple): A locator tuple (By, value) used to find the element
+            locator (tuple): A locator tuple (By, value) used to find the element.
 
         Returns:
             bool: True if at least one element is present, False otherwise.
         """
 
-        return len(self.browser.find_elements(*element)) > 0
+        return len(self.browser.find_elements(*locator)) > 0
