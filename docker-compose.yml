@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  chrome:
+    image: seleniarm/standalone-chromium:latest
+    shm_size: 4gb
+    ports:
+      - "4444:4444"
+
+  tests:
+    build: .
+    volumes:
+      - ./allure-report:/app/allure-report
+      - ./allure-results:/app/allure-results
