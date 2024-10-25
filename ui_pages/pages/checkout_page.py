@@ -4,7 +4,7 @@ import allure
 from selenium.webdriver import ActionChains
 
 from selenium.webdriver.common.by import By
-from pages.base_page import BasePage, BasePageLocators
+from ui_pages.pages.base_page import BasePage, BasePageLocators
 
 
 class CheckoutPage(BasePage):

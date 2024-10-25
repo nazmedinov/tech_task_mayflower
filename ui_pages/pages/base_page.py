@@ -162,8 +162,8 @@ class BasePage(object):
 
         return self.browser.current_url == expected_url
 
-    @allure.step('Check that at least one element is present on the page')
-    def is_at_least_one_element_present(self, element):
+    @allure.step('Check that at least one item is present on the page')
+    def is_at_least_one_item_present(self, element):
         """
         Check if at least one instance of the specified element is present on the page.
 

@@ -1,8 +1,8 @@
 import pytest
 
-from pages.catalog_page import CatalogPage
-from pages.checkout_page import CheckoutPage
-from pages.login_page import LoginPage
+from ui_pages.pages.catalog_page import CatalogPage
+from ui_pages.pages.checkout_page import CheckoutPage
+from ui_pages.pages.login_page import LoginPage
 
 
 class BaseTest(object):
