@@ -1,3 +1,5 @@
+import time
+
 import allure
 
 from selenium.common import TimeoutException
@@ -37,6 +39,7 @@ class BasePage(object):
     def wait_and_click(self, element, timeout=None, step=None):
         timeout, step = self.check_that_timeout_and_step_filled(timeout, step)
         WebDriverWait(self.browser, timeout, step).until(EC.visibility_of_element_located(element))
+        self.wait_until_element_clickable(element)
         self.browser.find_element(*element).click()
         return self
 
@@ -75,6 +78,17 @@ class BasePage(object):
         WebDriverWait(self.browser, timeout, step).until(EC.visibility_of_element_located(element))
         return self
 
+    def wait_for_invisibility(self, element, timeout=None, step=None):
+        timeout, step = self.check_that_timeout_and_step_filled(timeout, step)
+        WebDriverWait(self.browser, timeout, step).until_not(EC.visibility_of_element_located(element))
+        return self
+
+    # @allure.step("Ожидание появления элемента на странице")
+    def wait_for_presence(self, element, timeout=None, step=None):
+        timeout, step = self.check_that_timeout_and_step_filled(timeout, step)
+        WebDriverWait(self.browser, timeout, step).until(EC.presence_of_element_located(element))
+        return self
+
     @allure.step('Проверяем, что timeout и step для ожиданий определены, либо устанавливаем из глобальных переменных')
     def check_that_timeout_and_step_filled(self, timeout, step):
         if timeout is None:
@@ -92,6 +106,12 @@ class BasePage(object):
         timeout, step = self.check_that_timeout_and_step_filled(timeout, step)
         WebDriverWait(self.browser, timeout, step).until(EC.element_to_be_clickable(element))
         return self
+
+    @allure.step("Скролл к элементу")
+    def scroll_to_element(self, element):
+        # self.wait_for_visibility(element)
+        self.wait_for_presence(element)
+        self.browser.execute_script("arguments[0].scrollIntoView();", self.browser.find_element(*element))
 
 
 class BasePageLocators(object):
