@@ -49,5 +49,3 @@ class LoginPageLocators(BasePageLocators):
     LOGIN_BUTTON = (By.XPATH, "//button[text()='Войти']")
     # xpath кнопки открытия меню аккаунта
     ACCOUNT_MENU_BUTTON = (By.XPATH, "//a[@href='/my/']/span[@class='ms-2']")
-    # xpath кнопки перехода в профиль авторизованного юзера
-    USER_PROFILE_BUTTON = (By.XPATH, "//span[text()='Мой профиль']")
