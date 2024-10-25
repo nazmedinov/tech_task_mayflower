@@ -23,7 +23,7 @@ class TestCheckout(BaseTest):
 
         # self.checkout_page.open_page()
         # list_of_items_in_cart = self.checkout_page.get_list_of_items_in_cart()
-        #
+
         # assert added_item_name in list_of_items_in_cart, 'Добавить ассерт фолт'
         #
         # self.checkout_page.delete_last_added_item_from_cart()
