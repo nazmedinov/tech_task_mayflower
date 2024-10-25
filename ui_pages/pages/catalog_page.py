@@ -1,25 +1,25 @@
 import allure
 
 from selenium.webdriver.common.by import By
-from data.catalog_categories import CatalogDropdownItems
+from data.catalog_dropdawn_categories import CatalogDropdownItems
+from data.catalog_main_categories import CatalogMainItems
 from ui_pages.pages.base_page import BasePage, BasePageLocators
 
 
 class CatalogPageLocators(BasePageLocators):
     # xpath of the main button "Catalog"
-    CATALOG_MENU_BUTTON = (By.XPATH, "//button[contains(@class, 'dropdown-catalog-btn')]")
-    # xpath of the button of the section "Electronics" in the catalog
-    SECTION_ELECTRONIC_BUTTON = (By.XPATH, "//span[text()='Электроника']")
-    # xpath of the "Tablets" category button in the catalog
-    CATEGORY_TABLETS_BUTTON = (By.XPATH, "//a[text()='Планшеты' and contains(@class, 'subcat-list-item')]")
-    # xpath of DIGMA tablet buttons in the catalog
-    DIGMA_TABLET_BUTTON = (By.XPATH, "//div[contains(@class,'catalog__subsubcat')]//a[text()='Digma']")
-    # xpath of the header on the DIGMA tablet page
-    DIGMA_TABLET_TITLE = (By.XPATH, "//main//h1")
-    # xpath of product card on the DIGMA tablets page
+    CATALOG_MENU_BUTTON = (By.XPATH, "//button[contains(@class,'dropdown-catalog-btn')]")
+    # xpath of the title of opened category
+    OPENED_CATEGORY_TITLE = (By.XPATH, "//main//h1")
+    # xpath of product card in main catalog
     SINGLE_ITEM_BUTTON = (By.XPATH, "//div[contains(@class,'item-card__wrapper')]")
-    # xpath of item in the dropdown catalog
-    ITEM_IN_DROPDAWN_CATALOG = lambda self, item_name: (By.XPATH, f"//*[text()='{item_name}'][1]")
+    # xpath of item in catalog by order number
+    ITEM_BY_NUMBER_BUTTON = lambda self, order_number: (By.XPATH, f"(//img[@class='rs-image'])[{order_number}]")
+    # xpath of category in the dropdown catalog
+    CATEGORY_IN_DROPDAWN_CATALOG = lambda self, category_name: (By.XPATH, f"//*[text()='{category_name}'][1]")
+    # xpath of category in the main catalog
+    CATEGORY_IN_MAIN_CATALOG = lambda self, category_name: (By.XPATH, f"//div[@class='index-category__title' and "
+                                                                      f"text()='{category_name}']")
 
 
 class CatalogPage(BasePage):
@@ -27,7 +27,8 @@ class CatalogPage(BasePage):
         super().__init__(browser)
         self.current_page_url = self.url.CATALOG_PAGE_URL
         self.catalog_locators = CatalogPageLocators()
-        self.catalog_items = CatalogDropdownItems()
+        self.catalog_dropdown_items = CatalogDropdownItems()
+        self.catalog_main_items = CatalogMainItems()
 
     @allure.step('Opening the product catalog')
     def open_catalog_dropdown(self):
@@ -35,25 +36,32 @@ class CatalogPage(BasePage):
 
         return self
 
-    @allure.step("Hover over an item {item_name} in the dropdown catalog")
-    def hover_on_item_in_dropdown(self, item_name):
-        locator = self.catalog_locators.ITEM_IN_DROPDAWN_CATALOG(item_name)
+    @allure.step("Hover over an category {category_name} in the dropdown catalog")
+    def hover_on_item_in_dropdown(self, category_name):
+        locator = self.catalog_locators.CATEGORY_IN_DROPDAWN_CATALOG(category_name)
         self.hover_on_element(locator)
 
         return self
 
-    @allure.step("Click on item {item_name} in the dropdown catalog")
-    def click_on_item_in_dropdown(self, item_name):
-        locator = self.catalog_locators.ITEM_IN_DROPDAWN_CATALOG(item_name)
+    @allure.step("Click on category {category_name} in the dropdown catalog")
+    def click_on_item_in_dropdown(self, category_name):
+        locator = self.catalog_locators.CATEGORY_IN_DROPDAWN_CATALOG(category_name)
         self.wait_and_click(locator)
 
         return self
 
-    # @allure.step('Opening product page from the catalog by product number')
-    # def open_product_page_by_order_number(self, item_number=1):
-    #     item = self.browser.find_elements(*self.catalog_locators.SINGLE_ITEM_BUTTON)[item_number-1]
-    #     self.browser.execute_script("arguments[0].scrollIntoView();", item)
-    #     self.wait_for_element_clickability(item)
-    #     ActionChains(self.browser).pause(1).click(item).perform()
-    #
-    #     return self
+    @allure.step("Click on category {category_name} from main catalog")
+    def select_category_from_main_catalog(self, category_name):
+        locator = self.catalog_locators.CATEGORY_IN_MAIN_CATALOG(category_name)
+        self.scroll_to_element(locator)
+        self.wait_and_click(locator)
+
+        return self
+
+    @allure.step("Open product card in catalog by its number {order_number}")
+    def open_product_page_by_order_number(self, order_number):
+        locator = self.catalog_locators.ITEM_BY_NUMBER_BUTTON(order_number)
+        self.scroll_to_element(locator)
+        self.wait_and_click(locator)
+
+        return self

@@ -1,5 +1,3 @@
-import time
-
 import allure
 import pytest
 
@@ -21,7 +19,7 @@ class TestCatalog(BaseTest):
         self.catalog_page.click_on_item_in_dropdown(self.catalog_page.catalog_items.electronics.tablets.DIGMA)
 
         assert self.catalog_page.is_element_text_correct(
-            self.catalog_page.catalog_locators.DIGMA_TABLET_TITLE,
+            self.catalog_page.catalog_locators.OPENED_CATEGORY_TITLE,
             'Digma'
         ), self.catalog_page.error_messages.INCORRECT_ELEMENT_TITLE
 
