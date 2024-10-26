@@ -2,6 +2,7 @@ import allure
 import pytest
 
 from ui_tests.base_test import BaseTest
+from data.error_messages import ErrorMessages
 
 
 @allure.epic('User tests')
@@ -18,9 +19,9 @@ class TestLogin(BaseTest):
 
         assert self.login_page.is_element_present(
             self.login_page.login_locators.USER_PROFILE_BUTTON,
-        ), self.login_page.error_messages.ELEMENT_NOT_PRESENT
+        ), ErrorMessages.ELEMENT_NOT_PRESENT
 
         assert self.login_page.is_element_text_correct(
             self.login_page.login_locators.USER_PROFILE_BUTTON,
             'Мой профиль',
-        ), self.login_page.error_messages.INCORRECT_ELEMENT_TEXT
+        ), ErrorMessages.INCORRECT_ELEMENT_TEXT

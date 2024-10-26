@@ -1,8 +1,6 @@
 import allure
 
 from selenium.webdriver.common.by import By
-from data.catalog_dropdawn_categories import CatalogDropdownItems
-from data.catalog_main_categories import CatalogMainItems
 from ui_pages.pages.base_page import BasePage, BasePageLocators
 
 
@@ -27,8 +25,6 @@ class CatalogPage(BasePage):
         super().__init__(browser)
         self.current_page_url = self.url.CATALOG_PAGE_URL
         self.catalog_locators = CatalogPageLocators()
-        self.catalog_dropdown_items = CatalogDropdownItems()
-        self.catalog_main_items = CatalogMainItems()
 
     @allure.step('Opening the product catalog')
     def open_catalog_dropdown(self):

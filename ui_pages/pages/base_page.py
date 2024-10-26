@@ -7,7 +7,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from ui_pages.config import GLOBAL_TIMEOUT_FOR_WAITING, GLOBAL_STEP_FOR_WAITING
-from ui_pages.error_messages import ErrorMessages
+from data.error_messages import ErrorMessages
 
 
 class BasePageLocators(object):
@@ -28,7 +28,6 @@ class BasePage(object):
         self.current_page_url = None
         self.global_timeout = GLOBAL_TIMEOUT_FOR_WAITING
         self.global_step = GLOBAL_STEP_FOR_WAITING
-        self.error_messages = ErrorMessages()
 
     @allure.step('Opening a page by URL')
     def open_page(self, url=None):
@@ -53,7 +52,7 @@ class BasePage(object):
             element = self.browser.find_element(*locator)
             element.click()
         except (ElementClickInterceptedException, StaleElementReferenceException):
-            raise ElementClickInterceptedException(self.error_messages.ELEMENT_FAILED_CLICK)
+            raise ElementClickInterceptedException(ErrorMessages.ELEMENT_FAILED_CLICK)
 
         return element
 
@@ -93,7 +92,7 @@ class BasePage(object):
         try:
             element = WebDriverWait(self.browser, timeout, step).until(EC.visibility_of_element_located(locator))
         except TimeoutException:
-            raise AssertionError(self.error_messages.ELEMENT_NOT_VISIBLE)
+            raise AssertionError(ErrorMessages.ELEMENT_NOT_VISIBLE)
 
         return element
 
@@ -103,7 +102,7 @@ class BasePage(object):
         try:
             element = WebDriverWait(self.browser, timeout, step).until_not(EC.visibility_of_element_located(locator))
         except TimeoutException:
-            raise AssertionError(self.error_messages.ELEMENT_NOT_INVISIBLE)
+            raise AssertionError(ErrorMessages.ELEMENT_NOT_INVISIBLE)
         return element
 
     @allure.step("Waiting for an element to appear in the page's DOM")
@@ -112,7 +111,7 @@ class BasePage(object):
         try:
             element = WebDriverWait(self.browser, timeout, step).until(EC.presence_of_element_located(locator))
         except TimeoutException:
-            raise AssertionError(self.error_messages.ELEMENT_NOT_PRESENT)
+            raise AssertionError(ErrorMessages.ELEMENT_NOT_PRESENT)
         return element
 
     @allure.step('Wait for the element to be clickable')
@@ -121,7 +120,7 @@ class BasePage(object):
         try:
             element = WebDriverWait(self.browser, timeout, step).until(EC.element_to_be_clickable(locator))
         except TimeoutException:
-            raise AssertionError(self.error_messages.ELEMENT_NOT_CLICKABLE)
+            raise AssertionError(ErrorMessages.ELEMENT_NOT_CLICKABLE)
 
         return element
 
@@ -131,7 +130,7 @@ class BasePage(object):
         try:
             self.browser.execute_script("arguments[0].scrollIntoView();", element)
         except TimeoutException:
-            raise AssertionError(self.error_messages.ELEMENT_FAILED_SCROLL)
+            raise AssertionError(ErrorMessages.ELEMENT_FAILED_SCROLL)
 
         return element
 
@@ -206,3 +205,17 @@ class BasePage(object):
         """
 
         return len(self.browser.find_elements(*locator)) > 0
+
+    def find_all_elements(self, locator):
+        """
+        Finds all elements on the page matching the specified locator.
+
+        Args:
+            locator (tuple): A locator tuple (By, value) used to find the elements.
+
+        Returns:
+            list[WebElement]: A list of all elements matching the locator.
+                              Returns an empty list if no elements are found.
+        """
+
+        return self.browser.find_elements(*locator)
