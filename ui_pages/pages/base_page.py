@@ -19,7 +19,7 @@ class BasePageLocators(object):
     # xpath "Accept Cookie" button
     COOKIE_ACCEPT_BUTTON = (By.XPATH, "//button[text()='Принять']")
     # xpath of the "Go To Authorized User Profile" button
-    USER_PROFILE_BUTTON = (By.XPATH, "//span[text()='Мой профиль']")
+    USER_PROFILE_BUTTON = (By.XPATH, "(//span[@class='aside-menu__label'])[1]")
 
 
 class BasePage(object):
@@ -63,7 +63,7 @@ class BasePage(object):
         """
         Find the element using the provided locator and click it.
 
-        :param locator: (Tuple[str, str]) tuple with locator strategy and its value (By.STRATEGY, 'locator_value').
+        :param locator: (Tuple[str, str]) tuple with locator.
         :return: clicked WebElement.
         """
         try:
@@ -79,7 +79,7 @@ class BasePage(object):
         """
         Wait for the element to be visible and then checks if it is clickable before performing the click action.
 
-        :param locator: (Tuple[str, str]) tuple with locator strategy and its value (By.STRATEGY, 'locator_value').
+        :param locator: (Tuple[str, str]) tuple with locator.
         :return: clicked WebElement.
         """
         self.wait_for_visibility(locator)
@@ -93,7 +93,7 @@ class BasePage(object):
         """
         Clear the value in the specified text field by clicking on it and set its value to an empty string.
 
-        :param locator: (Tuple[str, str]) tuple with locator strategy and its value (By.STRATEGY, 'locator_value').
+        :param locator: (Tuple[str, str]) tuple with locator.
         :return: WebElement whose value was cleared.
         """
         element = self.wait_and_click(locator)
@@ -106,7 +106,7 @@ class BasePage(object):
         """
         Set the specified value into the text field by clicking on it and sending the keys.
 
-        :param locator: (Tuple[str, str]) tuple with locator strategy and its value (By.STRATEGY, 'locator_value').
+        :param locator: (Tuple[str, str]) tuple with locator.
         :param value: (str) value to set.
         :return: WebElement where the value was set.
         """
@@ -120,7 +120,7 @@ class BasePage(object):
         """
         Wait for the element to be visible and then performs a hover action to move the mouse pointer over the element.
 
-        :param locator: (Tuple[str, str]) tuple with locator strategy and its value (By.STRATEGY, 'locator_value').
+        :param locator: (Tuple[str, str]) tuple with locator.
         :return: WebElement that was hovered over.
         """
         element = self.wait_for_visibility(locator)
@@ -134,7 +134,7 @@ class BasePage(object):
         """
         Use WebDriverWait to wait until the element located by the provided locator is visible.
 
-        :param locator: (Tuple[str, str]) tuple with locator strategy and its value (By.STRATEGY, 'locator_value').
+        :param locator: (Tuple[str, str]) tuple with locator.
         :param timeout: (int) maximum time in seconds to wait for the condition.
         :param step: (int) interval in seconds to poll the condition.
         :return: visible WebElement located by the provided locator.
@@ -153,7 +153,7 @@ class BasePage(object):
         """
         Use WebDriverWait to wait until the element located by the provided locator is no longer visible.
 
-        :param locator: (Tuple[str, str]) tuple with locator strategy and its value (By.STRATEGY, 'locator_value').
+        :param locator: (Tuple[str, str]) tuple with locator.
         :param timeout: (int) maximum time in seconds to wait for the condition.
         :param step: (int) interval in seconds to poll the condition.
         :return: WebElement that becomes invisible.
@@ -171,7 +171,7 @@ class BasePage(object):
         """
         Use WebDriverWait to check for the presence of an element located by the provided locator.
 
-        :param locator: (Tuple[str, str]) tuple with locator strategy and its value (By.STRATEGY, 'locator_value').
+        :param locator: (Tuple[str, str]) tuple with locator.
         :param timeout: (int) maximum time in seconds to wait for the condition.
         :param step: (int) interval in seconds to poll the condition.
         :return: WebElement that is present in the DOM.
@@ -189,7 +189,7 @@ class BasePage(object):
         """
         Use WebDriverWait to check if the element located by the provided locator is clickable.
 
-        :param locator: (Tuple[str, str]) tuple with locator strategy and its value (By.STRATEGY, 'locator_value').
+        :param locator: (Tuple[str, str]) tuple with locator.
         :param timeout: (int) maximum time in seconds to wait for the condition.
         :param step: (int) interval in seconds to poll the condition.
         :return: The clickable WebElement.
@@ -207,7 +207,7 @@ class BasePage(object):
         """
         Wait for the element to be present in the DOM and then scrolls the page so that the element.
 
-        :param locator: (Tuple[str, str]) tuple with locator strategy and its value (By.STRATEGY, 'locator_value').
+        :param locator: (Tuple[str, str]) tuple with locator.
         :return: WebElement that was scrolled into view.
         """
         element = self.wait_for_presence(locator)
@@ -238,7 +238,7 @@ class BasePage(object):
         """
         Wait for the element located by the provided locator to be present in the DOM.
 
-        :param locator: (Tuple[str, str]) tuple with locator strategy and its value (By.STRATEGY, 'locator_value').
+        :param locator: (Tuple[str, str]) tuple with locator.
         :param timeout: (int) maximum time in seconds to wait for the condition.
         :param step: (int) interval in seconds to poll the condition.
         :return: True if the element is present, False otherwise.
@@ -255,7 +255,7 @@ class BasePage(object):
         """
         Check if the text of a specified element matches the expected value.
 
-        :param locator: (Tuple[str, str]) tuple with locator strategy and its value (By.STRATEGY, 'locator_value').
+        :param locator: (Tuple[str, str]) tuple with locator.
         :param text: (str) expected text value.
         :return: True if the element's text matches the expected text, False otherwise.
         """
@@ -279,7 +279,7 @@ class BasePage(object):
         """
         Check if at least one instance of the specified element is present on the page.
 
-        :param locator: (Tuple[str, str]) tuple with locator strategy and its value (By.STRATEGY, 'locator_value').
+        :param locator: (Tuple[str, str]) tuple with locator.
         :return: True if at least one element is present, False otherwise.
         """
 
@@ -290,7 +290,7 @@ class BasePage(object):
         """
         Finds all elements on the page matching the specified locator.
 
-        :param locator: (Tuple[str, str]) tuple with locator strategy and its value (By.STRATEGY, 'locator_value').
+        :param locator: (Tuple[str, str]) tuple with locator.
         :return: list of all find WebElements.
         """
 
