@@ -26,14 +26,25 @@ class CatalogPage(BasePage):
         self.current_page_url = self.url.CATALOG_PAGE_URL
         self.catalog_locators = CatalogPageLocators()
 
-    @allure.step('Opening the product catalog')
+    @allure.step('Opening the product catalog dropdown')
     def open_catalog_dropdown(self):
+        """
+        Open the product catalog dropdown.
+
+        :return: instance of the class.
+        """
         self.wait_and_click(self.catalog_locators.CATALOG_MENU_BUTTON)
 
         return self
 
     @allure.step("Hover over an category {category_name} in the dropdown catalog")
     def hover_on_item_in_dropdown(self, category_name):
+        """
+        Hover over a specified by name category or item in the dropdown catalog.
+
+        :param category_name: (str) name of the category or item to hover over.
+        :return: instance of the class.
+        """
         locator = self.catalog_locators.CATEGORY_IN_DROPDAWN_CATALOG(category_name)
         self.hover_on_element(locator)
 
@@ -41,6 +52,12 @@ class CatalogPage(BasePage):
 
     @allure.step("Click on category {category_name} in the dropdown catalog")
     def click_on_item_in_dropdown(self, category_name):
+        """
+        Click on a specified by name category or item in the dropdown catalog.
+
+        :param category_name: (str) name of the category or item to click on.
+        :return: instance of the class.
+        """
         locator = self.catalog_locators.CATEGORY_IN_DROPDAWN_CATALOG(category_name)
         self.wait_and_click(locator)
 
@@ -48,6 +65,12 @@ class CatalogPage(BasePage):
 
     @allure.step("Click on category {category_name} from main catalog")
     def select_category_from_main_catalog(self, category_name):
+        """
+        Select by name a specified category from the main catalog.
+
+        :param category_name: (str) name of the category from main catalog.
+        :return: instance of the class.
+        """
         locator = self.catalog_locators.CATEGORY_IN_MAIN_CATALOG(category_name)
         self.scroll_to_element(locator)
         self.wait_and_click(locator)
@@ -56,6 +79,12 @@ class CatalogPage(BasePage):
 
     @allure.step("Open product card in catalog by its number {order_number}")
     def open_product_page_by_order_number(self, order_number):
+        """
+        Open the product card in the catalog by its order number.
+
+        :param order_number: (int) the order number of the product to be opened.
+        :return: instance of the class.
+        """
         locator = self.catalog_locators.ITEM_BY_NUMBER_BUTTON(order_number)
         self.scroll_to_element(locator)
         self.wait_and_click(locator)

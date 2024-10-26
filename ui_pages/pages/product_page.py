@@ -20,12 +20,22 @@ class ProductPage(BasePage):
 
     @allure.step('Getting the product name from its page')
     def get_opened_product_name(self):
+        """
+        Retrieve the name of the currently opened product.
+
+        :return: (str) the name of the opened product.
+        """
         element = self.wait_for_visibility(self.product_locators.OPENED_ITEM_TITLE)
 
         return element.text
 
     @allure.step('Add opened product to cart')
     def add_opened_product_to_cart(self):
+        """
+        Add the currently opened product to the cart.
+
+        :return: instance of the class.
+        """
         self.wait_and_click(self.product_locators.ADD_TO_CART_BUTTON)
 
         return self
