@@ -22,12 +22,24 @@ class CheckoutPage(BasePage):
 
     @allure.step('Check by product name {product_name} that the product is in the cart')
     def is_product_in_cart(self, product_name):
+        """
+        Check if a product with the specified name is present in the shopping cart.
+
+        :param product_name: (str) the name of the product to check in the cart.
+        :return: (bool) True if the product is in the cart, False otherwise.
+        """
         items_in_cart = [item.text for item in self.find_all_elements(self.checkout_locators.ITEM_IN_CART_LIST)]
 
         return product_name in items_in_cart
 
     @allure.step('Delete product from the cart list by name {product_name}')
     def delete_product_from_cart(self, product_name):
+        """
+        Remove a product from the cart by its name.
+
+        :param product_name: (str) the name of the product to be deleted from the cart.
+        :return: instance of the class.
+        """
         locator = self.checkout_locators.DELETE_ITEM_IN_CART_BUTTON(product_name)
         self.scroll_to_element(locator)
         self.wait_and_click(locator)

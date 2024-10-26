@@ -2,7 +2,6 @@ import allure
 import pytest
 
 from ui_tests.base_test import BaseTest
-from data.error_messages import ErrorMessages
 
 
 @allure.epic('User tests')
@@ -19,9 +18,9 @@ class TestLogin(BaseTest):
 
         assert self.login_page.is_element_present(
             self.login_page.login_locators.USER_PROFILE_BUTTON,
-        ), ErrorMessages.ELEMENT_NOT_PRESENT
+        ), f"The 'User Profile' button, visible only to authorized users, is not present."
 
         assert self.login_page.is_element_text_correct(
             self.login_page.login_locators.USER_PROFILE_BUTTON,
             'Мой профиль',
-        ), ErrorMessages.INCORRECT_ELEMENT_TEXT
+        ), f"Text of 'User Profile' button, visible only to authorized users, is not correct."

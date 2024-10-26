@@ -26,6 +26,11 @@ class LoginPage(BasePage):
 
     @allure.step('Opening the login form')
     def open_login_form(self):
+        """
+        Open the login form from header.
+
+        :return: instance of the class.
+        """
         self.wait_and_click(self.login_locators.PERSONAL_ACCOUNT_BUTTON)
         self.wait_and_click(self.login_locators.LOGIN_FORM_BUTTON)
 
@@ -33,6 +38,11 @@ class LoginPage(BasePage):
 
     @allure.step('Authorization in the login form')
     def login_account_in_form(self):
+        """
+        Log into account through the login form.
+
+        :return: instance of the class.
+        """
         self.clear_field(self.login_locators.LOGIN_FIELD)
         self.set_value_to_field(self.login_locators.LOGIN_FIELD, os.environ.get('LOGIN_EMAIL'))
         self.clear_field(self.login_locators.PASSWORD_FIELD)
@@ -43,6 +53,11 @@ class LoginPage(BasePage):
 
     @allure.step('Opening the authorized user account menu')
     def open_account_menu(self):
+        """
+        Open the dropdown menu for the authorized user.
+
+        :return: instance of the class.
+        """
         self.wait_and_click(self.login_locators.ACCOUNT_MENU_BUTTON)
 
         return self

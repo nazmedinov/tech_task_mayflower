@@ -7,7 +7,6 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from ui_pages.config import GLOBAL_TIMEOUT_FOR_WAITING, GLOBAL_STEP_FOR_WAITING
-from data.error_messages import ErrorMessages
 from selenium.webdriver.remote.webelement import WebElement
 from typing import Tuple, Optional, Union, Literal
 
@@ -71,7 +70,7 @@ class BasePage(object):
             element = self.browser.find_element(*locator)
             element.click()
         except WebDriverException:
-            raise WebDriverException(ErrorMessages.ELEMENT_FAILED_CLICK)
+            raise WebDriverException(f'Failed to click on the element with locator: {locator}')
 
         return element
 
@@ -144,7 +143,7 @@ class BasePage(object):
         try:
             element = WebDriverWait(self.browser, timeout, step).until(EC.visibility_of_element_located(locator))
         except TimeoutException:
-            raise AssertionError(ErrorMessages.ELEMENT_NOT_VISIBLE)
+            raise AssertionError(f"Element with locator {locator} is not visible within {timeout} seconds.")
 
         return element
 
@@ -163,7 +162,7 @@ class BasePage(object):
         try:
             element = WebDriverWait(self.browser, timeout, step).until_not(EC.visibility_of_element_located(locator))
         except TimeoutException:
-            raise AssertionError(ErrorMessages.ELEMENT_NOT_INVISIBLE)
+            raise AssertionError(f"Element with locator {locator} did not become invisible within {timeout} seconds.")
 
         return element
 
@@ -181,7 +180,7 @@ class BasePage(object):
         try:
             element = WebDriverWait(self.browser, timeout, step).until(EC.presence_of_element_located(locator))
         except TimeoutException:
-            raise AssertionError(ErrorMessages.ELEMENT_NOT_PRESENT)
+            raise AssertionError(f"Element with locator {locator} was not found in the DOM within {timeout} seconds.")
         return element
 
     @allure.step('Wait for the element to be clickable')
@@ -199,7 +198,7 @@ class BasePage(object):
         try:
             element = WebDriverWait(self.browser, timeout, step).until(EC.element_to_be_clickable(locator))
         except TimeoutException:
-            raise AssertionError(ErrorMessages.ELEMENT_NOT_CLICKABLE)
+            raise AssertionError(f"Element with locator {locator} is not clickable within {timeout} seconds.")
 
         return element
 
@@ -215,7 +214,7 @@ class BasePage(object):
         try:
             self.browser.execute_script("arguments[0].scrollIntoView();", element)
         except TimeoutException:
-            raise AssertionError(ErrorMessages.ELEMENT_FAILED_SCROLL)
+            raise AssertionError(f"Failed to scroll to element with locator {locator}.")
 
         return element
 
