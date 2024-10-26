@@ -34,13 +34,10 @@ class BasePage(object):
     @allure.step('Opening a page by URL')
     def open_page(self, url: Optional[str] = None):
         """
-        Open the specified page by URL. If no URL is provided, it opens the current page URL.
+        Open page using the received url or the default page url.
 
-        Args:
-            url (Optional[str]): The URL of the page to open. If None, the current page URL is used.
-
-        Returns:
-            self: Returns the instance of the class for method chaining.
+        :param url: (Optional[str]) The URL of the page to open.
+        :return: instance of the class.
         """
         if url is None:
             url = self.current_page_url
@@ -52,10 +49,8 @@ class BasePage(object):
     def accept_cookies(self):
         """
         Wait for the cookie acceptance button to be clickable and clicks it.
-        If the button is not found within the timeout period, it silently passes.
 
-        Returns:
-            self: Returns the instance of the class for method chaining.
+        :return: instance of the class.
         """
         try:
             self.wait_and_click(BasePageLocators.COOKIE_ACCEPT_BUTTON)
@@ -67,17 +62,10 @@ class BasePage(object):
     @allure.step('Click on the element without waiting')
     def click(self, locator: Tuple[str, str]) -> WebElement:
         """
-        Find the element using the provided locator and perform a click action.
-        If the element cannot be clicked due to a WebDriver exception, an appropriate error is raised.
+        Find the element using the provided locator and click it.
 
-        Args:
-            locator (Tuple[str, str]): A tuple containing the locator strategy and the locator value.
-
-        Raises:
-            WebDriverException: If the element fails to be clicked.
-
-        Returns:
-            WebElement: The clicked element.
+        :param locator: (Tuple[str, str]) tuple with locator strategy and its value (By.STRATEGY, 'locator_value').
+        :return: clicked WebElement.
         """
         try:
             element = self.browser.find_element(*locator)
@@ -91,17 +79,9 @@ class BasePage(object):
     def wait_and_click(self, locator: Tuple[str, str]) -> WebElement:
         """
         Wait for the element to be visible and then checks if it is clickable before performing the click action.
-        If any of the wait conditions fail, appropriate errors are raised.
 
-        Args:
-            locator (Tuple[str, str]): A tuple containing the locator strategy and the locator value.
-
-        Raises:
-            TimeoutException: If the element is not visible within the specified timeout.
-            WebDriverException: If the element cannot be clicked.
-
-        Returns:
-            WebElement: The clicked element.
+        :param locator: (Tuple[str, str]) tuple with locator strategy and its value (By.STRATEGY, 'locator_value').
+        :return: clicked WebElement.
         """
         self.wait_for_visibility(locator)
         self.wait_for_element_clickability(locator)
@@ -112,18 +92,10 @@ class BasePage(object):
     @allure.step("Deleting a filled value in a text field")
     def clear_field(self, locator: Tuple[str, str]) -> WebElement:
         """
-        Clear the value in the specified text field by clicking on it and executing
-        a JavaScript command to set its value to an empty string.
+        Clear the value in the specified text field by clicking on it and set its value to an empty string.
 
-        Args:
-            locator (Tuple[str, str]): A tuple containing the locator strategy and the locator value.
-
-        Raises:
-            TimeoutException: If the element is not visible within the specified timeout.
-            WebDriverException: If the element cannot be clicked.
-
-        Returns:
-            WebElement: The element whose value was cleared.
+        :param locator: (Tuple[str, str]) tuple with locator strategy and its value (By.STRATEGY, 'locator_value').
+        :return: WebElement whose value was cleared.
         """
         element = self.wait_and_click(locator)
         self.browser.execute_script("arguments[0].value = '';", element)
@@ -135,16 +107,9 @@ class BasePage(object):
         """
         Set the specified value into the text field by clicking on it and sending the keys.
 
-        Args:
-            locator (Tuple[str, str]): A tuple containing the locator strategy and the locator value.
-            value (str): The value to be entered into the text field.
-
-        Raises:
-            TimeoutException: If the element is not visible within the specified timeout.
-            WebDriverException: If the element cannot be clicked or if sending keys fails.
-
-        Returns:
-            WebElement: The element where the value was set.
+        :param locator: (Tuple[str, str]) tuple with locator strategy and its value (By.STRATEGY, 'locator_value').
+        :param value: (str) value to set.
+        :return: WebElement where the value was set.
         """
         element = self.wait_and_click(locator)
         element.send_keys(value)
@@ -154,17 +119,10 @@ class BasePage(object):
     @allure.step("Hover over an element")
     def hover_on_element(self, locator: Tuple[str, str]) -> WebElement:
         """
-        Wait for the element to be visible and then performs a hover action
-        using ActionChains to move the mouse pointer over the element.
+        Wait for the element to be visible and then performs a hover action to move the mouse pointer over the element.
 
-        Args:
-            locator (Tuple[str, str]): A tuple containing the locator strategy and the locator value.
-
-        Raises:
-            TimeoutException: If the element is not visible within the specified timeout.
-
-        Returns:
-            WebElement: The element that was hovered over.
+        :param locator: (Tuple[str, str]) tuple with locator strategy and its value (By.STRATEGY, 'locator_value').
+        :return: WebElement that was hovered over.
         """
         element = self.wait_for_visibility(locator)
         actions = ActionChains(self.browser)
@@ -176,18 +134,11 @@ class BasePage(object):
     def wait_for_visibility(self, locator: Tuple[str, str], timeout: int = None, step: int = None) -> WebElement:
         """
         Use WebDriverWait to wait until the element located by the provided locator is visible.
-        If the element is not visible within the specified timeout, an assertion error is raised.
 
-        Args:
-            locator (Tuple[str, str]): A tuple containing the locator strategy and the locator value.
-            timeout (int, optional): The maximum time to wait for checking visibility. Defaults to global timeout.
-            step (int, optional): The polling interval for checking visibility. Defaults to global step.
-
-        Raises:
-            AssertionError: If the element is not visible within the specified timeout.
-
-        Returns:
-            WebElement: The visible element located by the provided locator.
+        :param locator: (Tuple[str, str]) tuple with locator strategy and its value (By.STRATEGY, 'locator_value').
+        :param timeout: (int) maximum time in seconds to wait for the condition.
+        :param step: (int) interval in seconds to poll the condition.
+        :return: visible WebElement located by the provided locator.
         """
         timeout, step = self.check_that_timeout_and_step_filled(timeout, step)
         try:
@@ -202,18 +153,11 @@ class BasePage(object):
             -> Union[Literal[False, True], WebElement]:
         """
         Use WebDriverWait to wait until the element located by the provided locator is no longer visible.
-        If the element is still visible within the specified timeout, an assertion error is raised.
 
-        Args:
-            locator (Tuple[str, str]): A tuple containing the locator strategy and the locator value.
-            timeout (int, optional): The maximum time to wait for checking visibility. Defaults to global timeout.
-            step (int, optional): The polling interval for checking visibility. Defaults to global step.
-
-        Raises:
-            AssertionError: If the element remains visible within the specified timeout.
-
-        Returns:
-            Union[Literal[False, True], WebElement]: Returns the element that becomes invisible.
+        :param locator: (Tuple[str, str]) tuple with locator strategy and its value (By.STRATEGY, 'locator_value').
+        :param timeout: (int) maximum time in seconds to wait for the condition.
+        :param step: (int) interval in seconds to poll the condition.
+        :return: WebElement that becomes invisible.
         """
         timeout, step = self.check_that_timeout_and_step_filled(timeout, step)
         try:
@@ -227,18 +171,11 @@ class BasePage(object):
     def wait_for_presence(self, locator: Tuple[str, str], timeout: int = None, step: int = None) -> WebElement:
         """
         Use WebDriverWait to check for the presence of an element located by the provided locator.
-        If the element is not present within the specified timeout, an assertion error is raised.
 
-        Args:
-            locator (Tuple[str, str]): A tuple containing the locator strategy and the locator value.
-            timeout (int, optional): The maximum time to wait for checking visibility. Defaults to global timeout.
-            step (int, optional): The polling interval for checking visibility. Defaults to global step.
-
-        Raises:
-            AssertionError: If the element is not present in the DOM within the specified timeout.
-
-        Returns:
-            WebElement: The found element that is present in the DOM.
+        :param locator: (Tuple[str, str]) tuple with locator strategy and its value (By.STRATEGY, 'locator_value').
+        :param timeout: (int) maximum time in seconds to wait for the condition.
+        :param step: (int) interval in seconds to poll the condition.
+        :return: WebElement that is present in the DOM.
         """
         timeout, step = self.check_that_timeout_and_step_filled(timeout, step)
         try:
@@ -252,18 +189,11 @@ class BasePage(object):
             -> WebElement:
         """
         Use WebDriverWait to check if the element located by the provided locator is clickable.
-        If the element is not clickable within the specified timeout, an assertion error is raised.
 
-        Args:
-            locator (Tuple[str, str]): A tuple containing the locator strategy and the locator value.
-            timeout (int, optional): The maximum time to wait for checking visibility. Defaults to global timeout.
-            step (int, optional): The polling interval for checking visibility. Defaults to global step.
-
-        Raises:
-            AssertionError: If the element is not clickable within the specified timeout.
-
-        Returns:
-            WebElement: The clickable element.
+        :param locator: (Tuple[str, str]) tuple with locator strategy and its value (By.STRATEGY, 'locator_value').
+        :param timeout: (int) maximum time in seconds to wait for the condition.
+        :param step: (int) interval in seconds to poll the condition.
+        :return: The clickable WebElement.
         """
         timeout, step = self.check_that_timeout_and_step_filled(timeout, step)
         try:
@@ -276,17 +206,10 @@ class BasePage(object):
     @allure.step("Scroll to element")
     def scroll_to_element(self, locator: Tuple[str, str]) -> WebElement:
         """
-        Wait for the element located by the provided locator to be present in the DOM
-        and then scrolls the page so that the element is visible.
+        Wait for the element to be present in the DOM and then scrolls the page so that the element.
 
-        Args:
-            locator (Tuple[str, str]): A tuple containing the locator strategy and the locator value.
-
-        Raises:
-            AssertionError: If the element cannot be scrolled into view.
-
-        Returns:
-            WebElement: The element that was scrolled into view.
+        :param locator: (Tuple[str, str]) tuple with locator strategy and its value (By.STRATEGY, 'locator_value').
+        :return: WebElement that was scrolled into view.
         """
         element = self.wait_for_presence(locator)
         try:
@@ -298,15 +221,11 @@ class BasePage(object):
 
     def check_that_timeout_and_step_filled(self, timeout: Optional[int], step: Optional[int]) -> Tuple[int, int]:
         """
-        Ensures that values for timeout and polling step are set.
-        If either is None, assigns default global values.
+        Ensures that values for timeout and polling step are set. If either is None, assigns default global values.
 
-        Args:
-            timeout (int or None)
-            step (int or None)
-
-        Returns:
-            tuple: A tuple (timeout, step) with the final values for timeout and polling interval.
+        :param timeout: (int) maximum time in seconds to wait for the condition.
+        :param step: (int) interval in seconds to poll the condition.
+        :return: tuple (timeout, step).
         """
         if timeout is None:
             timeout = self.global_timeout
@@ -320,13 +239,10 @@ class BasePage(object):
         """
         Wait for the element located by the provided locator to be present in the DOM.
 
-        Args:
-            locator (Tuple[str, str]): A tuple containing the locator strategy and the locator value.
-            timeout (int, optional): The maximum time to wait for checking visibility. Defaults to global timeout.
-            step (int, optional): The polling interval for checking visibility. Defaults to global step.
-
-        Returns:
-            bool: True if the element is present, False otherwise.
+        :param locator: (Tuple[str, str]) tuple with locator strategy and its value (By.STRATEGY, 'locator_value').
+        :param timeout: (int) maximum time in seconds to wait for the condition.
+        :param step: (int) interval in seconds to poll the condition.
+        :return: True if the element is present, False otherwise.
         """
         timeout, step = self.check_that_timeout_and_step_filled(timeout, step)
         try:
@@ -340,12 +256,9 @@ class BasePage(object):
         """
         Check if the text of a specified element matches the expected value.
 
-        Args:
-            locator (tuple): A locator tuple (By, value) used to find the element.
-            text (str): The expected text that should match the element's text.
-
-        Returns:
-            bool: True if the element's text matches the expected text, False otherwise.
+        :param locator: (Tuple[str, str]) tuple with locator strategy and its value (By.STRATEGY, 'locator_value').
+        :param text: (str) expected text value.
+        :return: True if the element's text matches the expected text, False otherwise.
         """
         element = self.wait_for_visibility(locator)
 
@@ -356,11 +269,8 @@ class BasePage(object):
         """
         Check if the current browser URL matches the expected URL.
 
-        Args:
-            expected_url (str): The expected URL that the browser should be at.
-
-        Returns:
-            bool: True if the current URL matches the expected URL, False otherwise.
+        :param expected_url: (str) expected url that should be in browser.
+        :return: True if the current url matches the expected url, False otherwise.
         """
 
         return self.browser.current_url == expected_url
@@ -370,11 +280,8 @@ class BasePage(object):
         """
         Check if at least one instance of the specified element is present on the page.
 
-        Args:
-            locator (tuple): A locator tuple (By, value) used to find the element.
-
-        Returns:
-            bool: True if at least one element is present, False otherwise.
+        :param locator: (Tuple[str, str]) tuple with locator strategy and its value (By.STRATEGY, 'locator_value').
+        :return: True if at least one element is present, False otherwise.
         """
 
         return len(self.browser.find_elements(*locator)) > 0
@@ -384,11 +291,8 @@ class BasePage(object):
         """
         Finds all elements on the page matching the specified locator.
 
-        Args:
-            locator (tuple): A locator tuple (By, value) used to find the elements.
-
-        Returns:
-            list[WebElement]: A list of all elements matching the locator or empty list if no elements are found.
+        :param locator: (Tuple[str, str]) tuple with locator strategy and its value (By.STRATEGY, 'locator_value').
+        :return: list of all find WebElements.
         """
 
         return self.browser.find_elements(*locator)
