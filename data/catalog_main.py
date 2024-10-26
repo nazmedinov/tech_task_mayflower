@@ -1,4 +1,4 @@
-class CatalogMainItems:
+class CatalogMain:
     TABLETS = "Планшеты"
     LAPTOPS = "Ноутбуки"
     PROJECTORS = "Проекторы"

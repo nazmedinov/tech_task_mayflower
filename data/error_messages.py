@@ -9,3 +9,5 @@ class ErrorMessages:
     ELEMENT_NOT_PRESENT = 'Element is not found in the DOM of page'
     ELEMENT_NOT_CLICKABLE = 'Element is not clickable'
     ELEMENT_FAILED_SCROLL = 'Failed to scroll to the element'
+    PRODUCT_NOT_FOUND_IN_CART = 'Product not found in cart list'
+    PRODUCT_SHOULD_NOT_BE_IN_CART = 'Product should not be in cart'
