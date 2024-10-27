@@ -10,7 +10,7 @@ class CheckoutPageLocators(BasePageLocators):
     # xpath of title on cart page
     CHECKOUT_PAGE_TITLE = (By.XPATH, "//div[@class='h1' and text()='Оформление заказа']")
     # xpath of button to remove an item from the list in the cart
-    DELETE_ITEM_IN_CART_BUTTON = lambda self, product_name: (By.XPATH, f"//a[@class='cart-checkout-item__title' and "
+    DELETE_FROM_CART_BUTTON = lambda self, product_name: (By.XPATH, f"//a[@class='cart-checkout-item__title' and "
                                                                        f"text()='{product_name}']/following-sibling::a")
 
 
@@ -40,7 +40,7 @@ class CheckoutPage(BasePage):
         :param product_name: (str) the name of the product to be deleted from the cart.
         :return: instance of the class.
         """
-        locator = self.checkout_locators.DELETE_ITEM_IN_CART_BUTTON(product_name)
+        locator = self.checkout_locators.DELETE_FROM_CART_BUTTON(product_name)
         self.scroll_to_element(locator)
         self.wait_and_click(locator)
         self.wait_for_invisibility(locator)

@@ -8,6 +8,8 @@ from ui_pages.pages.login_page import LoginPage
 from ui_pages.pages.catalog_page import CatalogPage
 from ui_pages.pages.checkout_page import CheckoutPage
 from ui_pages.pages.product_page import ProductPage
+from ui_pages.pages.favorites_page import FavoritesPage
+from data.catalog_main import CatalogMain
 
 
 @allure.step('Browser opening')
@@ -44,3 +46,13 @@ def product_page(browser):
 @pytest.fixture
 def checkout_page(browser):
     return CheckoutPage(browser)
+
+
+@pytest.fixture
+def favorites_page(browser):
+    return FavoritesPage(browser)
+
+
+@pytest.fixture
+def item_category(request):
+    return CatalogMain.CATEGORY_NAMES[request.param]
