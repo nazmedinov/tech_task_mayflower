@@ -21,7 +21,7 @@ class CheckoutPage(BasePage):
         self.checkout_locators = CheckoutPageLocators()
 
     @allure.step('Checking product {product_name} is in the cart by its name')
-    def is_product_in_cart(self, product_name) -> bool:
+    def is_product_in_cart(self, product_name: str) -> bool:
         """
         Checking product with specified name is present in the shopping cart.
 
@@ -33,7 +33,7 @@ class CheckoutPage(BasePage):
         return product_name in items_in_cart
 
     @allure.step('Delete product {product_name} from the cart by its name')
-    def delete_product_from_cart(self, product_name):
+    def delete_product_from_cart(self, product_name: str):
         """
         Remove product from the cart by its name.
 

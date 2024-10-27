@@ -19,7 +19,7 @@ class FavoritesPage(BasePage):
         self.checkout_locators = FavoritesPageLocators()
 
     @allure.step('Checking product {product_name} is in the favorites list')
-    def is_product_in_favorites(self, product_name) -> bool:
+    def is_product_in_favorites(self, product_name: str) -> bool:
         """
         Checking product with specified name is present in the favorites list.
 
@@ -31,7 +31,7 @@ class FavoritesPage(BasePage):
         return product_name in items_in_favorites
 
     @allure.step('Delete product {product_name} from the favorites list by its name')
-    def delete_product_from_favorites(self, product_name):
+    def delete_product_from_favorites(self, product_name: str):
         """
         Remove product from the favorites list by its name.
 

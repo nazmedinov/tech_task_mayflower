@@ -38,7 +38,7 @@ class CatalogPage(BasePage):
         return self
 
     @allure.step("Hover over an category {category_name} in the dropdown catalog")
-    def hover_on_item_in_dropdown(self, category_name):
+    def hover_on_item_in_dropdown(self, category_name: str):
         """
         Hover over a specified by name category or item in the dropdown catalog.
 
@@ -51,7 +51,7 @@ class CatalogPage(BasePage):
         return self
 
     @allure.step("Click on category {category_name} in the dropdown catalog")
-    def click_on_item_in_dropdown(self, category_name):
+    def click_on_item_in_dropdown(self, category_name: str):
         """
         Click on a specified by name category or item in the dropdown catalog.
 
@@ -64,7 +64,7 @@ class CatalogPage(BasePage):
         return self
 
     @allure.step("Click on category {category_name} from main catalog")
-    def select_category_from_main_catalog(self, category_name):
+    def select_category_from_main_catalog(self, category_name: str):
         """
         Select by name a specified category from the main catalog.
 
@@ -78,7 +78,7 @@ class CatalogPage(BasePage):
         return self
 
     @allure.step("Open product card in catalog by its number {order_number}")
-    def open_product_page_by_order_number(self, order_number):
+    def open_product_page_by_order_number(self, order_number: int):
         """
         Open the product card in the catalog by its order number.
 
