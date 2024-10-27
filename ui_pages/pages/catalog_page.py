@@ -5,17 +5,17 @@ from ui_pages.pages.base_page import BasePage, BasePageLocators
 
 
 class CatalogPageLocators(BasePageLocators):
-    # xpath of the main button "Catalog"
+    # xpath of the button that open dropdown "Catalog"
     CATALOG_MENU_BUTTON = (By.XPATH, "//button[contains(@class,'dropdown-catalog-btn')]")
-    # xpath of the title of opened category
+    # xpath of the title on opened category page
     OPENED_CATEGORY_TITLE = (By.XPATH, "//main//h1")
-    # xpath of product card in main catalog
+    # xpath of single product card in catalog list
     SINGLE_ITEM_BUTTON = (By.XPATH, "//div[contains(@class,'item-card__wrapper')]")
-    # xpath of item in catalog by order number
+    # xpath of single product card by it order number on page
     ITEM_BY_NUMBER_BUTTON = lambda self, order_number: (By.XPATH, f"(//img[@class='rs-image'])[{order_number}]")
-    # xpath of category in the dropdown catalog
+    # xpath of category in the dropdown catalog by it name on page
     CATEGORY_IN_DROPDAWN_CATALOG = lambda self, category_name: (By.XPATH, f"//*[text()='{category_name}'][1]")
-    # xpath of category in the main catalog
+    # xpath of category in the main catalog by it name on page
     CATEGORY_IN_MAIN_CATALOG = lambda self, category_name: (By.XPATH, f"//div[@class='index-category__title' and "
                                                                       f"text()='{category_name}']")
 
@@ -26,10 +26,10 @@ class CatalogPage(BasePage):
         self.current_page_url = self.url.CATALOG_PAGE_URL
         self.catalog_locators = CatalogPageLocators()
 
-    @allure.step('Opening the product catalog dropdown')
+    @allure.step('Opening product catalog dropdown')
     def open_catalog_dropdown(self):
         """
-        Open the product catalog dropdown.
+        Open product catalog dropdown.
 
         :return: instance of the class.
         """
