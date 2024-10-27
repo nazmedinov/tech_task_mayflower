@@ -11,7 +11,7 @@ from ui_pages.pages.product_page import ProductPage
 
 
 @allure.step('Browser opening')
-@pytest.fixture(scope='session')
+@pytest.fixture
 def browser():
     chrome_options = Options()
     # chrome_options.add_argument('--headless')
@@ -26,21 +26,21 @@ def browser():
     browser.quit()
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture
 def login_page(browser):
     return LoginPage(browser)
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture
 def catalog_page(browser):
     return CatalogPage(browser)
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture
 def product_page(browser):
     return ProductPage(browser)
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture
 def checkout_page(browser):
     return CheckoutPage(browser)

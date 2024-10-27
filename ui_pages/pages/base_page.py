@@ -53,7 +53,7 @@ class BasePage(object):
         """
         try:
             self.wait_and_click(BasePageLocators.COOKIE_ACCEPT_BUTTON)
-        except TimeoutException:
+        except (TimeoutException, AssertionError):
             pass
 
         return self

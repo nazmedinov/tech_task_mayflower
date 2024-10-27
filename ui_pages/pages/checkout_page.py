@@ -21,7 +21,7 @@ class CheckoutPage(BasePage):
         self.checkout_locators = CheckoutPageLocators()
 
     @allure.step('Check by product name {product_name} that the product is in the cart')
-    def is_product_in_cart(self, product_name):
+    def is_product_in_cart(self, product_name) -> bool:
         """
         Check if a product with the specified name is present in the shopping cart.
 
