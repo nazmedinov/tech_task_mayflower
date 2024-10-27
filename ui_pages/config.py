@@ -1,5 +1,8 @@
-GLOBAL_TIMEOUT_FOR_WAITING = 30
-GLOBAL_STEP_FOR_WAITING = 3
+# param GLOBAL_TIMEOUT: (int) the maximum time in seconds to wait for the condition in functions. Default value.
+GLOBAL_TIMEOUT = 30
+
+# param GLOBAL_STEP: (int) the interval in seconds to poll the condition in functions. Default value.
+GLOBAL_STEP = 3
 
 
 class PagesURL:

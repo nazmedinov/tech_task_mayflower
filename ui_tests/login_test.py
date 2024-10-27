@@ -3,7 +3,7 @@ import pytest
 
 
 @allure.epic('User tests')
-@allure.feature('User login')
+@allure.feature('User Login')
 class TestLogin:
     @pytest.mark.smoke
     @allure.title('Checking user authorization with correct data')
