@@ -6,9 +6,16 @@ services:
     shm_size: 4gb
     ports:
       - "4444:4444"
+    networks:
+      - test_task
 
   tests:
     build: .
     volumes:
       - ./allure-report:/app/allure-report
       - ./allure-results:/app/allure-results
+    networks:
+      - test_task
+
+networks:
+  test_task:
