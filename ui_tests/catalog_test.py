@@ -14,9 +14,9 @@ class TestCatalog:
         catalog_page.accept_cookies()
 
         catalog_page.open_catalog_dropdown()
-        catalog_page.hover_on_item_in_dropdown(CatalogDropdown.ELECTRONICS)
-        catalog_page.hover_on_item_in_dropdown(CatalogDropdown.ElectronicsGoods.TABLETS)
-        catalog_page.click_on_item_in_dropdown(CatalogDropdown.TabletsItems.DIGMA)
+        catalog_page.hover_on_category_in_dropdown(CatalogDropdown.ELECTRONICS)
+        catalog_page.hover_on_category_in_dropdown(CatalogDropdown.ElectronicsGoods.TABLETS)
+        catalog_page.click_on_category_in_dropdown(CatalogDropdown.TabletsItems.DIGMA)
 
         assert catalog_page.is_element_text_correct(catalog_page.catalog_locators.OPENED_CATEGORY_TITLE, 'Digma'), \
             "The title of the opened category should be 'Digma' but it is not."

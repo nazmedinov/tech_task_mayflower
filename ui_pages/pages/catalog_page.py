@@ -37,12 +37,12 @@ class CatalogPage(BasePage):
 
         return self
 
-    @allure.step("Hover over an category {category_name} in the dropdown catalog")
-    def hover_on_item_in_dropdown(self, category_name: str):
+    @allure.step("Hover over category {category_name} in dropdown catalog")
+    def hover_on_category_in_dropdown(self, category_name: str):
         """
-        Hover over a specified by name category or item in the dropdown catalog.
+        Hover over a specified by name category in the dropdown catalog.
 
-        :param category_name: (str) name of the category or item to hover over.
+        :param category_name: (str) name of the category.
         :return: instance of the class.
         """
         locator = self.catalog_locators.CATEGORY_IN_DROPDAWN_CATALOG(category_name)
@@ -50,12 +50,12 @@ class CatalogPage(BasePage):
 
         return self
 
-    @allure.step("Click on category {category_name} in the dropdown catalog")
-    def click_on_item_in_dropdown(self, category_name: str):
+    @allure.step("Click on category {category_name} in dropdown catalog")
+    def click_on_category_in_dropdown(self, category_name: str):
         """
-        Click on a specified by name category or item in the dropdown catalog.
+        Click on a specified by name category in the dropdown catalog.
 
-        :param category_name: (str) name of the category or item to click on.
+        :param category_name: (str) name of the category.
         :return: instance of the class.
         """
         locator = self.catalog_locators.CATEGORY_IN_DROPDAWN_CATALOG(category_name)
@@ -68,7 +68,7 @@ class CatalogPage(BasePage):
         """
         Select by name a specified category from the main catalog.
 
-        :param category_name: (str) name of the category from main catalog.
+        :param category_name: (str) name of the category.
         :return: instance of the class.
         """
         locator = self.catalog_locators.CATEGORY_IN_MAIN_CATALOG(category_name)
@@ -82,7 +82,7 @@ class CatalogPage(BasePage):
         """
         Open the product card in the catalog by its order number.
 
-        :param order_number: (int) the order number of the product to be opened.
+        :param order_number: (int) the order number in catalog list.
         :return: instance of the class.
         """
         locator = self.catalog_locators.ITEM_BY_NUMBER_BUTTON(order_number)

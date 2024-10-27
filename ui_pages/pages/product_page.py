@@ -20,7 +20,7 @@ class ProductPage(BasePage):
         self.product_locators = ProductPageLocators()
 
     @allure.step('Getting product name from opened product page')
-    def get_opened_product_name(self) -> str:
+    def get_product_name(self) -> str:
         """
         Retrieve the name of product from opened product page.
 
@@ -31,7 +31,7 @@ class ProductPage(BasePage):
         return element.text
 
     @allure.step('Add opened product to cart')
-    def add_opened_product_to_cart(self):
+    def add_product_to_cart(self):
         """
         Add product to the cart from opened product page.
 
@@ -42,7 +42,7 @@ class ProductPage(BasePage):
         return self
 
     @allure.step('Add opened product to favorites')
-    def add_opened_product_to_favorites(self):
+    def add_product_to_favorites(self):
         """
         Add product to the favorites from opened product page.
 
