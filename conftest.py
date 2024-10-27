@@ -11,16 +11,23 @@ from ui_pages.pages.favorites_page import FavoritesPage
 from data.catalog_main import CatalogMain
 
 
+def pytest_addoption(parser):
+    parser.addoption("--run_env", action="store", default="remote", help="Specify the environment: remote or local")
+
+
 @pytest.fixture
-def browser():
+def browser(request):
     chrome_options = Options()
-    chrome_options.add_argument('--headless')
-    # chrome_options.add_argument('--no-sandbox')
-    # chrome_options.add_argument('--disable-dev-shm-usage')
-    # chrome_options.add_argument("--window-size=1920,1080")
-    # browser = webdriver.Remote(command_executor='http://chrome:4444/wd/hub', options=chrome_options)
-    chrome_options.add_argument("--window-size=1920,1080")
-    browser = webdriver.Chrome(options=chrome_options)
+    if request.config.getoption("--run_env") == "local":
+        chrome_options.add_argument("--window-size=1920,1080")
+        chrome_options.add_argument('--headless')
+        browser = webdriver.Chrome(options=chrome_options)
+    else:
+        chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument('--disable-dev-shm-usage')
+        chrome_options.add_argument("--window-size=1920,1080")
+        browser = webdriver.Remote(command_executor='http://chrome:4444/wd/hub', options=chrome_options)
     browser.implicitly_wait(3)
     yield browser
     browser.quit()
