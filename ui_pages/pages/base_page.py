@@ -130,8 +130,12 @@ class BasePage(object):
         return element
 
     @allure.step("Waiting for element to appear on page")
-    def wait_for_visibility(self, locator: Tuple[str, str], timeout: int = GLOBAL_TIMEOUT, step: GLOBAL_STEP = None) \
-            -> WebElement:
+    def wait_for_visibility(
+            self,
+            locator: Tuple[str, str],
+            timeout: int = GLOBAL_TIMEOUT,
+            step: GLOBAL_STEP = GLOBAL_STEP
+    ) -> WebElement:
         """
         Wait until the element is visible.
 
