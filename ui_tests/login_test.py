@@ -9,7 +9,6 @@ class TestLogin:
     @allure.title('Checking user authorization with correct data')
     def test_login_user(self, login_page):
         login_page.open_page()
-        login_page.accept_cookies()
 
         login_page.open_login_form().login_account_in_form()
         login_page.open_account_menu()

@@ -11,8 +11,6 @@ class TestCatalog:
     @allure.title('Checking user opening of category through the catalog: Digma tablets')
     def test_open_digma_items_from_catalog(self, catalog_page):
         catalog_page.open_page()
-        catalog_page.accept_cookies()
-
         catalog_page.open_catalog_dropdown()
         catalog_page.hover_on_category_in_dropdown(CatalogDropdown.ELECTRONICS)
         catalog_page.hover_on_category_in_dropdown(CatalogDropdown.ElectronicsGoods.TABLETS)

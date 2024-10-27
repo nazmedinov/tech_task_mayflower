@@ -17,14 +17,13 @@ class TestProduct:
     @allure.title('Checking the addition and removal opened item from favorites')
     def test_add_and_remove_item_from_favorites(self, catalog_page, product_page, favorites_page, item_category):
         catalog_page.open_page()
-        catalog_page.accept_cookies()
         catalog_page.select_category_from_main_catalog(item_category)
         catalog_page.open_product_page_by_order_number(random_number_in_range(1, 3))
 
         product_name = product_page.get_product_name()
         product_page.add_product_to_favorites()
 
-        favorites_page.open_page()
+        favorites_page.open_page(accept_cookies=False)
         assert favorites_page.is_product_in_favorites(product_name), \
             f"The product '{product_name}' should be in the favorites list, but it was not found."
 
