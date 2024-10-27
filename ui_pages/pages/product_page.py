@@ -8,7 +8,7 @@ from ui_pages.pages.base_page import BasePage, BasePageLocators
 class ProductPageLocators(BasePageLocators):
     # xpath of the title of opened item
     OPENED_ITEM_TITLE = (By.XPATH, '//div/h1')
-    # xpath of the add-to-cart button
+    # xpath of the add to cart button
     ADD_TO_CART_BUTTON = (By.XPATH, "//div[@class='product-controls']//button[contains(@class,'buy')]")
 
 
@@ -19,7 +19,7 @@ class ProductPage(BasePage):
         self.product_locators = ProductPageLocators()
 
     @allure.step('Getting the product name from its page')
-    def get_opened_product_name(self):
+    def get_opened_product_name(self) -> str:
         """
         Retrieve the name of the currently opened product.
 
