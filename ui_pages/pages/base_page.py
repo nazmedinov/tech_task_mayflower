@@ -31,16 +31,19 @@ class BasePage(object):
         self.global_step = GLOBAL_STEP
 
     @allure.step('Opening page by URL')
-    def open_page(self, url: Optional[str] = None):
+    def open_page(self, url: Optional[str] = None, accept_cookies: bool = True):
         """
         Open page by received or default url.
 
         :param url: (Optional[str]) page URL.
+        :param accept_cookies: (bool) True to accept cookies; otherwise, False.
         :return: instance of the class.
         """
         if url is None:
             url = self.current_page_url
         self.browser.get(url)
+        if accept_cookies:
+            self.accept_cookies()
 
         return self
 
