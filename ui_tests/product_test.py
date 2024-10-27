@@ -7,7 +7,7 @@ from utils.helpers import random_number_in_range
 
 
 @allure.epic('User tests')
-@allure.feature('Product page')
+@allure.feature('Product Page')
 class TestProduct:
     @pytest.mark.regress
     @pytest.mark.parametrize('item_category',

@@ -1,4 +1,3 @@
-import allure
 import pytest
 
 from selenium import webdriver
@@ -12,11 +11,10 @@ from ui_pages.pages.favorites_page import FavoritesPage
 from data.catalog_main import CatalogMain
 
 
-@allure.step('Browser opening')
 @pytest.fixture
 def browser():
     chrome_options = Options()
-    # chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--headless')
     # chrome_options.add_argument('--no-sandbox')
     # chrome_options.add_argument('--disable-dev-shm-usage')
     # chrome_options.add_argument("--window-size=1920,1080")

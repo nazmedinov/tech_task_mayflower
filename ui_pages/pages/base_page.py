@@ -6,7 +6,7 @@ from ui_pages.config import PagesURL
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from ui_pages.config import GLOBAL_TIMEOUT_FOR_WAITING, GLOBAL_STEP_FOR_WAITING
+from ui_pages.config import GLOBAL_TIMEOUT, GLOBAL_STEP
 from selenium.webdriver.remote.webelement import WebElement
 from typing import Tuple, Optional, Union, Literal
 
@@ -18,7 +18,7 @@ class BasePageLocators(object):
     LOGIN_FORM_BUTTON = (By.XPATH, "//a[text()='Вход']")
     # xpath "Accept Cookie" button
     COOKIE_ACCEPT_BUTTON = (By.XPATH, "//button[text()='Принять']")
-    # xpath of the "Go To Authorized User Profile" button
+    # xpath of the "My Account" button in the page header for authorized user
     USER_PROFILE_BUTTON = (By.XPATH, "(//span[@class='aside-menu__label'])[1]")
 
 
@@ -27,15 +27,15 @@ class BasePage(object):
         self.browser = browser
         self.url = PagesURL()
         self.current_page_url = None
-        self.global_timeout = GLOBAL_TIMEOUT_FOR_WAITING
-        self.global_step = GLOBAL_STEP_FOR_WAITING
+        self.global_timeout = GLOBAL_TIMEOUT
+        self.global_step = GLOBAL_STEP
 
-    @allure.step('Opening a page by URL')
+    @allure.step('Opening page by URL')
     def open_page(self, url: Optional[str] = None):
         """
-        Open page using the received url or the default page url.
+        Open page by received or default url.
 
-        :param url: (Optional[str]) The URL of the page to open.
+        :param url: (Optional[str]) page URL.
         :return: instance of the class.
         """
         if url is None:
@@ -47,7 +47,7 @@ class BasePage(object):
     @allure.step('Accepting cookies')
     def accept_cookies(self):
         """
-        Wait for the cookie acceptance button to be clickable and clicks it.
+        Accepting cookies on page.
 
         :return: instance of the class.
         """
@@ -58,10 +58,10 @@ class BasePage(object):
 
         return self
 
-    @allure.step('Click on the element without waiting')
+    @allure.step('Click on the element')
     def click(self, locator: Tuple[str, str]) -> WebElement:
         """
-        Find the element using the provided locator and click it.
+        Click on the element on page.
 
         :param locator: (Tuple[str, str]) tuple with locator.
         :return: clicked WebElement.
@@ -74,10 +74,10 @@ class BasePage(object):
 
         return element
 
-    @allure.step('Click on the element reflected on the page')
+    @allure.step('Wait for the element and click on it')
     def wait_and_click(self, locator: Tuple[str, str]) -> WebElement:
         """
-        Wait for the element to be visible and then checks if it is clickable before performing the click action.
+        Wait for the element and click on it.
 
         :param locator: (Tuple[str, str]) tuple with locator.
         :return: clicked WebElement.
@@ -91,7 +91,7 @@ class BasePage(object):
     @allure.step("Deleting a filled value in a text field")
     def clear_field(self, locator: Tuple[str, str]) -> WebElement:
         """
-        Clear the value in the specified text field by clicking on it and set its value to an empty string.
+        Clear the value in text field.
 
         :param locator: (Tuple[str, str]) tuple with locator.
         :return: WebElement whose value was cleared.
@@ -104,7 +104,7 @@ class BasePage(object):
     @allure.step("Filling the value {value} into the text field")
     def set_value_to_field(self, locator: Tuple[str, str], value: str) -> WebElement:
         """
-        Set the specified value into the text field by clicking on it and sending the keys.
+        Set the specified value into the text field.
 
         :param locator: (Tuple[str, str]) tuple with locator.
         :param value: (str) value to set.
@@ -115,10 +115,10 @@ class BasePage(object):
 
         return element
 
-    @allure.step("Hover over an element")
+    @allure.step("Hover over element")
     def hover_on_element(self, locator: Tuple[str, str]) -> WebElement:
         """
-        Wait for the element to be visible and then performs a hover action to move the mouse pointer over the element.
+        Hover action to move the mouse pointer over the element.
 
         :param locator: (Tuple[str, str]) tuple with locator.
         :return: WebElement that was hovered over.
@@ -129,17 +129,17 @@ class BasePage(object):
 
         return element
 
-    @allure.step("Waiting for an element to appear on the page")
-    def wait_for_visibility(self, locator: Tuple[str, str], timeout: int = None, step: int = None) -> WebElement:
+    @allure.step("Waiting for element to appear on page")
+    def wait_for_visibility(self, locator: Tuple[str, str], timeout: int = GLOBAL_TIMEOUT, step: GLOBAL_STEP = None) \
+            -> WebElement:
         """
-        Use WebDriverWait to wait until the element located by the provided locator is visible.
+        Wait until the element is visible.
 
         :param locator: (Tuple[str, str]) tuple with locator.
-        :param timeout: (int) maximum time in seconds to wait for the condition.
-        :param step: (int) interval in seconds to poll the condition.
-        :return: visible WebElement located by the provided locator.
+        :param timeout: (int) time in seconds to wait.
+        :param step: (int) interval in seconds to poll.
+        :return: visible WebElement.
         """
-        timeout, step = self.check_that_timeout_and_step_filled(timeout, step)
         try:
             element = WebDriverWait(self.browser, timeout, step).until(EC.visibility_of_element_located(locator))
         except TimeoutException:
@@ -147,18 +147,17 @@ class BasePage(object):
 
         return element
 
-    @allure.step("Wait until the element is not visible on the page")
-    def wait_for_invisibility(self, locator: Tuple[str, str], timeout: int = None, step: int = None) \
+    @allure.step("Wait until element is not visible")
+    def wait_for_invisibility(self, locator: Tuple[str, str], timeout: int = GLOBAL_TIMEOUT, step: int = GLOBAL_STEP) \
             -> Union[Literal[False, True], WebElement]:
         """
-        Use WebDriverWait to wait until the element located by the provided locator is no longer visible.
+        Wait until element is no longer visible.
 
         :param locator: (Tuple[str, str]) tuple with locator.
-        :param timeout: (int) maximum time in seconds to wait for the condition.
-        :param step: (int) interval in seconds to poll the condition.
-        :return: WebElement that becomes invisible.
+        :param timeout: (int) time in seconds to wait.
+        :param step: (int) interval in seconds to poll.
+        :return: invisible WebElement.
         """
-        timeout, step = self.check_that_timeout_and_step_filled(timeout, step)
         try:
             element = WebDriverWait(self.browser, timeout, step).until_not(EC.visibility_of_element_located(locator))
         except TimeoutException:
@@ -166,35 +165,38 @@ class BasePage(object):
 
         return element
 
-    @allure.step("Waiting for an element to appear in the page's DOM")
-    def wait_for_presence(self, locator: Tuple[str, str], timeout: int = None, step: int = None) -> WebElement:
+    @allure.step("Waiting for element to appear in page's DOM")
+    def wait_for_presence(self, locator: Tuple[str, str], timeout: int = GLOBAL_TIMEOUT, step: int = GLOBAL_STEP) \
+            -> WebElement:
         """
-        Use WebDriverWait to check for the presence of an element located by the provided locator.
+        Wait for the presence of element in DOM.
 
         :param locator: (Tuple[str, str]) tuple with locator.
-        :param timeout: (int) maximum time in seconds to wait for the condition.
-        :param step: (int) interval in seconds to poll the condition.
-        :return: WebElement that is present in the DOM.
+        :param timeout: (int) time in seconds to wait.
+        :param step: (int) interval in seconds to poll.
+        :return: presented in the DOM WebElement.
         """
-        timeout, step = self.check_that_timeout_and_step_filled(timeout, step)
         try:
             element = WebDriverWait(self.browser, timeout, step).until(EC.presence_of_element_located(locator))
         except TimeoutException:
             raise AssertionError(f"Element with locator {locator} was not found in the DOM within {timeout} seconds.")
         return element
 
-    @allure.step('Wait for the element to be clickable')
-    def wait_for_element_clickability(self, locator: Tuple[str, str], timeout: int = None, step: int = None) \
-            -> WebElement:
+    @allure.step('Wait for element to be clickable')
+    def wait_for_element_clickability(
+            self,
+            locator: Tuple[str, str],
+            timeout: int = GLOBAL_TIMEOUT,
+            step: int = GLOBAL_STEP
+    ) -> WebElement:
         """
-        Use WebDriverWait to check if the element located by the provided locator is clickable.
+        Wait until element is clickable.
 
         :param locator: (Tuple[str, str]) tuple with locator.
-        :param timeout: (int) maximum time in seconds to wait for the condition.
-        :param step: (int) interval in seconds to poll the condition.
-        :return: The clickable WebElement.
+        :param timeout: (int) time in seconds to wait.
+        :param step: (int) interval in seconds to poll.
+        :return: clickable WebElement.
         """
-        timeout, step = self.check_that_timeout_and_step_filled(timeout, step)
         try:
             element = WebDriverWait(self.browser, timeout, step).until(EC.element_to_be_clickable(locator))
         except TimeoutException:
@@ -205,7 +207,7 @@ class BasePage(object):
     @allure.step("Scroll to element")
     def scroll_to_element(self, locator: Tuple[str, str]) -> WebElement:
         """
-        Wait for the element to be present in the DOM and then scrolls the page so that the element.
+        Scroll the page to element.
 
         :param locator: (Tuple[str, str]) tuple with locator.
         :return: WebElement that was scrolled into view.
@@ -218,32 +220,21 @@ class BasePage(object):
 
         return element
 
-    def check_that_timeout_and_step_filled(self, timeout: Optional[int], step: Optional[int]) -> Tuple[int, int]:
+    @allure.step("Checking that element is present on the page")
+    def is_element_present(
+            self,
+            locator: Tuple[str, str],
+            timeout: int = GLOBAL_TIMEOUT,
+            step: int = GLOBAL_STEP
+    ) -> bool:
         """
-        Ensures that values for timeout and polling step are set. If either is None, assigns default global values.
-
-        :param timeout: (int) maximum time in seconds to wait for the condition.
-        :param step: (int) interval in seconds to poll the condition.
-        :return: tuple (timeout, step).
-        """
-        if timeout is None:
-            timeout = self.global_timeout
-        if step is None:
-            step = self.global_step
-
-        return timeout, step
-
-    @allure.step("Checking that the element is present on the page")
-    def is_element_present(self, locator: Tuple[str, str], timeout: int = None, step: int = None) -> bool:
-        """
-        Wait for the element located by the provided locator to be present in the DOM.
+        Check if the element is in the DOM.
 
         :param locator: (Tuple[str, str]) tuple with locator.
-        :param timeout: (int) maximum time in seconds to wait for the condition.
-        :param step: (int) interval in seconds to poll the condition.
+        :param timeout: (int) time in seconds to wait.
+        :param step: (int) interval in seconds to poll.
         :return: True if the element is present, False otherwise.
         """
-        timeout, step = self.check_that_timeout_and_step_filled(timeout, step)
         try:
             WebDriverWait(self.browser, timeout, step).until(EC.presence_of_element_located(locator))
         except TimeoutException:
@@ -253,11 +244,11 @@ class BasePage(object):
     @allure.step("Check if the element text matches the value {text}")
     def is_element_text_correct(self, locator: Tuple[str, str], text: str) -> bool:
         """
-        Check if the text of a specified element matches the expected value.
+        Check if the text of element matches the expected value.
 
         :param locator: (Tuple[str, str]) tuple with locator.
         :param text: (str) expected text value.
-        :return: True if the element's text matches the expected text, False otherwise.
+        :return: True if element's text matches the expected text, False otherwise.
         """
         element = self.wait_for_visibility(locator)
 
@@ -266,9 +257,9 @@ class BasePage(object):
     @allure.step("Check if the current url matches the expected {expected_url}")
     def is_current_url_correct(self, expected_url: str) -> bool:
         """
-        Check if the current browser URL matches the expected URL.
+        Check if the current URL matches the expected URL.
 
-        :param expected_url: (str) expected url that should be in browser.
+        :param expected_url: (str) expected url.
         :return: True if the current url matches the expected url, False otherwise.
         """
 
@@ -277,7 +268,7 @@ class BasePage(object):
     @allure.step('Check that at least one item is present on the page')
     def is_at_least_one_item_present(self, locator: Tuple[str, str]) -> bool:
         """
-        Check if at least one instance of the specified element is present on the page.
+        Check if at least one of the specified elements is on the page.
 
         :param locator: (Tuple[str, str]) tuple with locator.
         :return: True if at least one element is present, False otherwise.
