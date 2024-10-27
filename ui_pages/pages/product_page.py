@@ -8,8 +8,10 @@ from ui_pages.pages.base_page import BasePage, BasePageLocators
 class ProductPageLocators(BasePageLocators):
     # xpath of the title of opened item
     OPENED_ITEM_TITLE = (By.XPATH, '//div/h1')
-    # xpath of the add to cart button
+    # xpath of button to add item in cart
     ADD_TO_CART_BUTTON = (By.XPATH, "//div[@class='product-controls']//button[contains(@class,'buy')]")
+    # xpath of button to add item in favorites
+    ADD_TO_FAVORITES_BUTTON = (By.XPATH, "//a[@class='product-fav rs-favorite']")
 
 
 class ProductPage(BasePage):
@@ -37,5 +39,12 @@ class ProductPage(BasePage):
         :return: instance of the class.
         """
         self.wait_and_click(self.product_locators.ADD_TO_CART_BUTTON)
+
+        return self
+
+    @allure.step('Add opened product to favorites')
+    def add_opened_product_to_favorites(self):
+        self.scroll_to_element(self.product_locators.ADD_TO_FAVORITES_BUTTON)
+        self.wait_and_click(self.product_locators.ADD_TO_FAVORITES_BUTTON)
 
         return self
