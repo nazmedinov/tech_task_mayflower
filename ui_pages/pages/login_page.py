@@ -9,11 +9,11 @@ from dotenv import load_dotenv
 class LoginPageLocators(BasePageLocators):
     # xpath of email input field in login form
     LOGIN_FIELD = (By.XPATH, "//input[@name='login']")
-    # xpath поля для ввода пароля в форме логина
+    # xpath of password input field in login form
     PASSWORD_FIELD = (By.XPATH, "//input[@name='pass']")
-    # xpath of the password entry field in the login form
+    # xpath of the login button in the login form
     LOGIN_BUTTON = (By.XPATH, "//button[text()='Войти']")
-    # xpath of the account menu opening button
+    # xpath of the button that open account menu for authorized user
     ACCOUNT_MENU_BUTTON = (By.XPATH, "//a[@href='/my/']/span[@class='ms-2']")
 
 
@@ -24,7 +24,7 @@ class LoginPage(BasePage):
         self.current_page_url = self.url.MAIN_PAGE_URL
         self.login_locators = LoginPageLocators()
 
-    @allure.step('Opening the login form')
+    @allure.step('Opening login form')
     def open_login_form(self):
         """
         Open the login form from header.
@@ -36,7 +36,7 @@ class LoginPage(BasePage):
 
         return self
 
-    @allure.step('Authorization in the login form')
+    @allure.step('Authorization in login form')
     def login_account_in_form(self):
         """
         Log into account through the login form.
@@ -51,10 +51,10 @@ class LoginPage(BasePage):
 
         return self
 
-    @allure.step('Opening the authorized user account menu')
+    @allure.step('Opening dropdown menu accessible to authorized users')
     def open_account_menu(self):
         """
-        Open the dropdown menu for the authorized user.
+        Open the dropdown menu accessible only to the authorized users.
 
         :return: instance of the class.
         """
